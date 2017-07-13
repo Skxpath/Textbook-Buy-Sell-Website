@@ -12,7 +12,7 @@ class Textbook(models.Model):
     isbn = models.DecimalField(max_digits=MAX_ISBN_DIGITS, decimal_places=0, primary_key=True)
 
 class Ad(models.Model):
-    price = models.DecimalField(max_digits=MAX_PRICE_DOLLAR_DIGITS + PRICE_CENTS_DIGITS, decimal_places=2)
+    price = models.DecimalField(max_digits=MAX_PRICE_DOLLAR_DIGITS + PRICE_CENTS_DIGITS, decimal_places=PRICE_CENTS_DIGITS)
     MAX_BOOK_CONDITION_CODE_LENGTH = 4
     NEW = 'NEW'
     GOOD = 'GOOD'
