@@ -124,7 +124,7 @@ STATIC_URL = '/static/'
 # Default value is /accounts/profile/
 # can fill with a hardcoded url, or a url name
 # TODO: use a url name instead of an absolute url path!
-LOGIN_REDIRECT_URL = '/textbook/ads_list'
+LOGIN_REDIRECT_URL = '/textbook/profile'
 
-#If a page requires login and the user isn't logged in, they will automatically be directed back to the login page
+#If a page requires login and the user isn't logged in, they will automatically be directed to the login page
 LOGIN_URL = 'login'
