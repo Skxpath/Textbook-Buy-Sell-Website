@@ -135,4 +135,5 @@ LOGIN_URL = 'accounts:login'
 AUTH_USER_MODEL = "accounts.User"
 
 # Used for sending verification emails to users when they sign up
+# the console email backedn currently configured doesn't actually send emails; it just prints what would be sent to the console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
