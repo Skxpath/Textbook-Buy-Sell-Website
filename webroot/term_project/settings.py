@@ -133,3 +133,6 @@ LOGIN_URL = 'accounts:login'
 # Allows us to use a custom user model rather than the standard one
 # The custom user model is declared in the models.py of a separate accounts Django application
 AUTH_USER_MODEL = "accounts.User"
+
+# Used for sending verification emails to users when they sign up
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
