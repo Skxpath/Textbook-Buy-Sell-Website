@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 MAX_ISBN_DIGITS = 13
 MAX_PRICE_DOLLAR_DIGITS = 4
@@ -31,7 +31,9 @@ class Ad(models.Model):
         choices=BOOK_CONDITIONS,
         default=GOOD
     )
+    # Forms a many-to-one relationship between users and ads
+    # i.e. an ad belongs to only one user, but a user can have many ads
     # When a user's account is deleted, delete all of their ads too
-    poster = models.ForeignKey(User, on_delete=models.CASCADE)
+    poster = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     # We want to ensure that every ad is associated with a Textbook, so all ads for a textbook can be found together
     book = models.ForeignKey(Textbook, on_delete=models.CASCADE)

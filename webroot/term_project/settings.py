@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts.apps.AccountsConfig',
     'textbook_app.apps.TextbookAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -127,4 +128,8 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/textbook/profile'
 
 #If a page requires login and the user isn't logged in, they will automatically be directed to the login page
-LOGIN_URL = 'login'
+LOGIN_URL = 'accounts:login'
+
+# Allows us to use a custom user model rather than the standard one
+# The custom user model is declared in the models.py of a separate accounts Django application
+AUTH_USER_MODEL = "accounts.User"
