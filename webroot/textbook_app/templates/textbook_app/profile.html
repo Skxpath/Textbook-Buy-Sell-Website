@@ -1,6 +1,9 @@
 {% extends 'textbook_app/base.html' %}
 
 {% block content %}
+{% load static %}
+<img src="{% static "fox.jpg" %}" alt="My image"/>
+
   <h1>Hello, {{ user.username }}</h1>
 
   <ul id="actions">

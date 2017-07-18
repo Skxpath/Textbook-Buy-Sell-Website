@@ -1,10 +1,22 @@
-{% if user.username %}
-  <div class='navbar'>
-    <a href="{% url 'accounts:logout' %}">Log Out</a>
-    <a href="{% url 'textbook_app:profile' %}">Profile</a>
-  </div>
-{% else %}
-  <a href="{% url 'accounts:login' %}">Log In</a>
-{% endif %}
-{% block content %}
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{% block title %}{% endblock %}</title>
+    <script src="https://unpkg.com/vue"></script>
+  </head>
+  <body>
+    {% if user.username %}
+      <div class='navbar'>
+        <a href="{% url 'accounts:logout' %}">Log Out</a>
+        <a href="{% url 'textbook_app:profile' %}">Profile</a>
+      </div>
+    {% else %}
+      <a href="{% url 'accounts:login' %}">Log In</a>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>

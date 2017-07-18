@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, render_to_response
 from django.contrib.auth.decorators import login_required
 from .models import Ad, Textbook, AdForm, TextbookForm
 from django.urls import reverse
@@ -28,7 +29,7 @@ def profile(request):
     }
     return render(request, 'textbook_app/profile.html', context)
 
-# Note: these are VERY rough versions of the 'new ad' views
+# Note: This is a VERY rough version of the 'new ad' view
 # Once implemented properly, the user should be able to search through existing textbooks
 # and link that textbook to their ad if a textbook already exists. Otherwise, they can add a new one
 @login_required
@@ -49,7 +50,7 @@ def ads_new(request):
     else:
         textbookForm = TextbookForm()
         adForm = AdForm()
-    return render(request, 'textbook_app/ads_new.html', {'textbookForm': textbookForm, 'adForm': adForm})
+        return render(request, 'textbook_app/ads_new.html', {'textbookForm': textbookForm, 'adForm': adForm})
 
 # TODO: Validate only the user that created the ad can edit, show error otherwise
 # How do we handle non 2XX status codes? Redirect to error page?
@@ -77,3 +78,11 @@ def textbook_edit(request, textbook_isbn):
     else:
         textbook = get_object_or_404(Textbook, pk=textbook_isbn)
         return render(request, "textbook_app/textbook_edit.html", {'textbook': textbook})
+
+def textbook_search(request):
+    if request.method == 'POST':
+        search_text = request.POST['search_text']
+    else:
+        search_text = ''
+    ads = Ad.objects.filter(book__title__contains=search_text)
+    return render_to_response('textbook_app/ajax_textbook_search.html', {'ads': ads})

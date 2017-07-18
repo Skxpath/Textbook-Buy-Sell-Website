@@ -1,0 +1,9 @@
+{% if ads.count > 0 %}
+<ul>
+  {% for ad in ads %}
+    <li>{{ ad.book.title }}</li>
+  {% endfor %}
+</ul>
+{% else %}
+  <h1>No Search Results!</h1>
+{% endif %}
