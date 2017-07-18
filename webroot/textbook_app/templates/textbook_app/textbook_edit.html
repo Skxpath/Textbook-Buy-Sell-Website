@@ -1,0 +1,22 @@
+{% extends 'textbook_app/base.html' %}
+
+{% block content %}
+  {% if textbook %}
+  <form action="{% url 'textbook_app:textbook_edit' textbook.isbn%}" method="post">
+    {% csrf_token %}
+    <label for="title">Book Title: </label>
+    <input type="text" name="title" id="title" value="{{textbook.title}}" />
+    <br />
+    <label for="author">Author: </label>
+    <input type="text" name="author" id="author" value="{{textbook.author}}" />
+    <br />
+    <label for="description">Description: </label>
+    <input type="text" name="description" id="description" value="{{textbook.description}}" />
+    <br />
+
+    <input type="submit" value="Edit Book" />
+  </form>
+  {% else %}
+    <h1>Error finding textbook {textbook.id}</h1>
+  {% endif %}
+{% endblock %}

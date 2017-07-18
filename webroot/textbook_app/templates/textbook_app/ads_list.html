@@ -4,7 +4,7 @@
   {% if ads_list %}
     <ul>
       {% for ad in ads_list %}
-        <li>{{ ad.book.title }} for sale from: {{ ad.poster.username }}</li>
+        <li>{{ ad.book.title }} for sale from: {{ ad.poster.username }} <a href="{% url 'textbook_app:ad_detail' ad.id%}">details </a></li>
       {% endfor %}
     </ul>
   {% else %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Ad, Textbook
 from django.urls import reverse
@@ -13,6 +13,11 @@ def ads_list(request):
         'ads_list': ads_list
     }
     return render(request, 'textbook_app/ads_list.html', context)
+
+@login_required
+def ad_detail(request, ad_id):
+    ad = get_object_or_404(Ad, pk=ad_id)
+    return render(request, 'textbook_app/ad_detail.html', {'ad': ad})
 
 @login_required
 def profile(request):
@@ -48,3 +53,15 @@ def ads_new_request(request):
     )
     ad.save()
     return HttpResponseRedirect(reverse('textbook_app:ads'))
+
+def textbook_edit(request, textbook_isbn):
+    if request.method == "POST":
+        textbook = get_object_or_404(Textbook, pk=textbook_isbn)
+        textbook.title = request.POST['title']
+        textbook.author = request.POST['author']
+        textbook.description = request.POST['description']
+        textbook.save()
+        return HttpResponseRedirect(reverse('textbook_app:ads'))
+    else:
+        textbook = get_object_or_404(Textbook, pk=textbook_isbn)
+        return render(request, "textbook_app/textbook_edit.html", {'textbook': textbook})
