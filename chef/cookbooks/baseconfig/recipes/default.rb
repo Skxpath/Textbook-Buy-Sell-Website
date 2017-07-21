@@ -22,15 +22,15 @@ package "python3-pip"
 execute 'django_install' do
   command 'sudo pip3 install django'
 end
+execute 'django_init_dev_database' do
+  cwd '/home/ubuntu/project/webroot/'
+  command 'python3 manage.py migrate'
+end
 execute 'django_init_server' do
   user 'ubuntu'
   cwd '/home/ubuntu/project/webroot'
   command 'nohup python3 manage.py runserver 0.0.0.0:8080 &'
 end
-# execute 'django_init_dev_database' do
-#   cwd '/home/ubuntu/project/webroot/exercise8'
-#   command 'python3 manage.py migrate'
-# end
 # execute 'django_populate_dev_database' do
 #   cwd '/home/ubuntu/project/mysite'
 #   command 'python3 manage.py loaddata initial_data.json'
