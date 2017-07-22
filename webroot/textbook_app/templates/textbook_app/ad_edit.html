@@ -1,0 +1,11 @@
+{% extends 'textbook_app/base.html' %}
+
+{% block content %}
+  <form action={% url 'textbook_app:ad_edit' ad.id %} method="post">
+    {% csrf_token %}
+    <div>Title: {{textbook.title}}</div>
+    <div>ISBN: {{textbook.isbn}}</div>
+    {{ adForm }}
+    <input type="submit" value="Submit" />
+  </form>
+{% endblock %}
