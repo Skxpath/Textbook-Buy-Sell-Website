@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Ad, Textbook
+from .models import Ad, Textbook, AdForm, TextbookForm
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 
@@ -32,27 +32,24 @@ def profile(request):
 # Once implemented properly, the user should be able to search through existing textbooks
 # and link that textbook to their ad if a textbook already exists. Otherwise, they can add a new one
 @login_required
-def ads_new_page(request):
-    return render(request, 'textbook_app/ads_new.html')
-
-@login_required
-def ads_new_request(request):
-    textbook = Textbook(
-        title = request.POST['title'],
-        author = request.POST['author'],
-        description = request.POST['description'],
-        isbn = request.POST['isbn'],
-    )
-    textbook.save()
-    ad = Ad(
-        # TODO: don't hardcode values here!
-        price = 3.50,
-        condition = 'GOOD',
-        book = textbook,
-        poster = request.user,
-    )
-    ad.save()
-    return HttpResponseRedirect(reverse('textbook_app:ads'))
+def ads_new(request):
+    if request.method == 'POST':
+        textbookForm = TextbookForm(request.POST)
+        adForm = AdForm(request.POST)
+        textbook_valid = textbookForm.is_valid()
+        ad_valid = adForm.is_valid()
+        # Do this because 'and' short circuits and we want to check both for validity
+        if textbook_valid and ad_valid:
+            textbook = textbookForm.save()
+            ad = adForm.save(commit=False)
+            ad.book = textbook
+            ad.poster = request.user
+            ad.save()
+            return HttpResponseRedirect(reverse('textbook_app:ads'))
+    else:
+        textbookForm = TextbookForm()
+        adForm = AdForm()
+    return render(request, 'textbook_app/ads_new.html', {'textbookForm': textbookForm, 'adForm': adForm})
 
 def textbook_edit(request, textbook_isbn):
     if request.method == "POST":

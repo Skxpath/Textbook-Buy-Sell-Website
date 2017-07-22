@@ -1,22 +1,10 @@
 {% extends 'textbook_app/base.html' %}
 
 {% block content %}
-  <form action="{% url 'textbook_app:ads_new_request' %}" method="post">
+  <form action="{% url 'textbook_app:ads_new' %}" method="post">
     {% csrf_token %}
-    <label for="title">Book Title: </label>
-    <input type="text" name="title" id="title" value="" />
-    <label for="author">Author: </label>
-    <input type="text" name="author" id="author" value="" />
-    <label for="description">Description: </label>
-    <input type="text" name="description" id="description" value="" />
-    <label for="phone">ISBN: </label>
-    <input type="text" name="isbn" id="isbn" value="" />
-    <label for="other_notes">Price: </label>
-    <input type="text" name="price" id="price" value="" />
-    <label for="other_notes">Condition: </label>
-    <input type="text" name="condition" id="condition" value="" />
-    <br />
-
+    {{ textbookForm }}
+    {{ adForm }}
     <input type="submit" value="Post Ad" />
   </form>
 {% endblock %}
