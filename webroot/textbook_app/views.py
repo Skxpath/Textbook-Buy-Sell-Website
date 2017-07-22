@@ -51,6 +51,21 @@ def ads_new(request):
         adForm = AdForm()
     return render(request, 'textbook_app/ads_new.html', {'textbookForm': textbookForm, 'adForm': adForm})
 
+# TODO: Validate only the user that created the ad can edit, show error otherwise
+# How do we handle non 2XX status codes? Redirect to error page?
+@login_required
+def ad_edit(request, ad_id):
+    ad = get_object_or_404(Ad, pk=ad_id)
+    textbook = get_object_or_404(Textbook, pk=ad.book.isbn)
+    if request.method == 'POST':
+        adForm = AdForm(request.POST, instance=ad)
+        if adForm.is_valid():
+            adForm.save()
+            return HttpResponseRedirect(reverse('textbook_app:ads'))
+    else:
+        adForm = AdForm(instance=ad)
+    return render(request, 'textbook_app/ad_edit.html', {'ad':ad, 'adForm': adForm, 'textbook':textbook})
+
 def textbook_edit(request, textbook_isbn):
     if request.method == "POST":
         textbook = get_object_or_404(Textbook, pk=textbook_isbn)

@@ -12,7 +12,7 @@
     <h2>Your Ads</h2>
     <ul>
       {% for ad in ads_list %}
-        <li>{{ ad.book.title }}</li>
+        <li>{{ ad.book.title }} <a href={% url 'textbook_app:ad_edit' ad.id %}>edit</a></li>
       {% endfor %}
     </ul>
   {% else %}
