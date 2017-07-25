@@ -4,16 +4,33 @@ from django.contrib.auth.decorators import login_required
 from .models import Ad, Textbook, AdForm, TextbookForm
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+NUM_ADS_PER_PAGE = 2
 
 def ads_list(request):
-    ads_list = Ad.objects.all()
     context = {
         # Note: the user may not be present here since login isn't required for this page
         'user': request.user,
-        'ads_list': ads_list
     }
     return render(request, 'textbook_app/ads_list.html', context)
+
+def ads_search(request):
+    ads_all = Ad.objects.all()
+    paginator = Paginator(ads_all, NUM_ADS_PER_PAGE)
+
+    page = request.GET.get('page')
+    try:
+        ads_page = paginator.page(page)
+    except PageNotAnInteger:
+        ads_page = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+    context = {
+        'ads_list': ads_page
+    }
+    return render(request, 'textbook_app/ajax_ad_search.html', context)
 
 @login_required
 def ad_detail(request, ad_id):

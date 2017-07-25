@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^ad_new$', views.ad_new, name='ad_new'),
     url(r'^(?P<textbook_isbn>[0-9]+)/edit', views.textbook_edit, name='textbook_edit'),
-    url(r'^textbook_search$', views.textbook_search, name='textbook_search')
+    url(r'^textbook_search$', views.textbook_search, name='textbook_search'),
+    url(r'^ads_search', views.ads_search, name='ads_search'),
 ]
