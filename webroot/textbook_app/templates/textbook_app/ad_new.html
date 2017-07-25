@@ -9,6 +9,11 @@
         <div id='textbook-form'>
           <input type='text' id='search' name='search' v-on:keyup='searchTextbooks'/>
           <div id='search_results'></div>
+          <!-- Display all errors outside the form field because the form is hidden by default when the page is loaded (see ad_new.js) -->
+          <!-- TODO: make the textbook form not hidden when it is returned with validation errors -->
+          {% for key, value in textbookForm.errors.items %}
+            {{ value }}
+          {% endfor %}
           <div v-if='isTextbookFormShown'>
             {{ textbookForm }}
           </div>
