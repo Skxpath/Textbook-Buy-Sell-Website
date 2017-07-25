@@ -1,7 +1,7 @@
-{% if ads.count > 0 %}
+{% if textbooks.count > 0 %}
 <ul>
-  {% for ad in ads %}
-    <li>{{ ad.book.title }}</li>
+  {% for textbook in textbooks %}
+    <input type='radio' name='existing-textbook' value='{{ textbook.isbn }}'>{{ textbook.title }}</li>
   {% endfor %}
 </ul>
 {% else %}
