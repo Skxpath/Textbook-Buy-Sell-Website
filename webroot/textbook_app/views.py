@@ -29,9 +29,6 @@ def profile(request):
     }
     return render(request, 'textbook_app/profile.html', context)
 
-# Note: This is a VERY rough version of the 'new ad' view
-# Once implemented properly, the user should be able to search through existing textbooks
-# and link that textbook to their ad if a textbook already exists. Otherwise, they can add a new one
 @login_required
 def ad_new(request):
     if request.method == 'POST':
