@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, render_to_response
 from django.contrib.auth.decorators import login_required
 from .models import Ad, Textbook, AdForm, TextbookForm
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 
 
 def ads_list(request):
@@ -28,28 +29,31 @@ def profile(request):
     }
     return render(request, 'textbook_app/profile.html', context)
 
-# Note: these are VERY rough versions of the 'new ad' views
-# Once implemented properly, the user should be able to search through existing textbooks
-# and link that textbook to their ad if a textbook already exists. Otherwise, they can add a new one
 @login_required
-def ads_new(request):
+def ad_new(request):
     if request.method == 'POST':
         textbookForm = TextbookForm(request.POST)
         adForm = AdForm(request.POST)
         textbook_valid = textbookForm.is_valid()
         ad_valid = adForm.is_valid()
-        # Do this because 'and' short circuits and we want to check both for validity
         if textbook_valid and ad_valid:
             textbook = textbookForm.save()
-            ad = adForm.save(commit=False)
-            ad.book = textbook
-            ad.poster = request.user
-            ad.save()
-            return HttpResponseRedirect(reverse('textbook_app:ads'))
+        # make sure the textbook form hasn't changed. If the user modified the data in the form,
+        # then they are probably looking to add a new textbook,
+        elif not textbookForm.has_changed() and 'existing-textbook' in request.POST and ad_valid:
+            textbook = get_object_or_404(Textbook, pk=request.POST['existing-textbook'])
+        else:
+            # Return the form with any server side error messages (ex: ISBN already exists)
+            return render(request, 'textbook_app/ad_new.html', {'textbookForm': textbookForm, 'adForm': adForm})
+        ad = adForm.save(commit=False)
+        ad.book = textbook
+        ad.poster = request.user
+        ad.save()
+        return HttpResponseRedirect(reverse('textbook_app:ads'))
     else:
         textbookForm = TextbookForm()
         adForm = AdForm()
-    return render(request, 'textbook_app/ads_new.html', {'textbookForm': textbookForm, 'adForm': adForm})
+        return render(request, 'textbook_app/ad_new.html', {'textbookForm': textbookForm, 'adForm': adForm})
 
 # TODO: Validate only the user that created the ad can edit, show error otherwise
 # How do we handle non 2XX status codes? Redirect to error page?
@@ -77,3 +81,11 @@ def textbook_edit(request, textbook_isbn):
     else:
         textbook = get_object_or_404(Textbook, pk=textbook_isbn)
         return render(request, "textbook_app/textbook_edit.html", {'textbook': textbook})
+
+def textbook_search(request):
+    if request.method == 'POST':
+        search_text = request.POST['search_text']
+    else:
+        search_text = ''
+    textbooks = Textbook.objects.filter(title__contains=search_text)
+    return render_to_response('textbook_app/ajax_textbook_search.html', {'textbooks': textbooks})
