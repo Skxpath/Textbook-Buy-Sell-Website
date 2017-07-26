@@ -4,14 +4,34 @@ from django.contrib.auth.decorators import login_required
 from .models import Ad, Textbook, AdForm, TextbookForm
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+# TODO: Let users set this value from a form field
+NUM_ADS_PER_PAGE = 5
 
 def ads_list(request):
-    ads_list = Ad.objects.all()
+    if (request.GET.__contains__('ad-search-text')):
+        search_text = request.GET.get('ad-search-text')
+    else:
+        search_text = ''
+    ads_all = Ad.objects.filter(book__title__contains=search_text)
+    paginator = Paginator(ads_all, NUM_ADS_PER_PAGE)
+
+    page = request.GET.get('page')
+    search = request.GET.get('ad-search-text')
+    print(search)
+    try:
+        ads_page = paginator.page(page)
+    except PageNotAnInteger:
+        ads_page = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        ads_page = paginator.page(paginator.num_pages)
     context = {
         # Note: the user may not be present here since login isn't required for this page
         'user': request.user,
-        'ads_list': ads_list
+        'ads_list': ads_page,
+        'previous_search_text': search_text
     }
     return render(request, 'textbook_app/ads_list.html', context)
 
