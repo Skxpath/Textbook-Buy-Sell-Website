@@ -4,7 +4,7 @@
 {% load static %}
 <img src="{% static "fox.jpg" %}" alt="My image"/>
 
-  <h1>Hello, {{ user.username }}</h1>
+  <h1 class='lead'>Hello, {{ user.username }}</h1>
 
   <ul id="actions">
     <li><a href="{% url 'textbook_app:ad_new' %}">Create Ad</a></li>
@@ -12,10 +12,21 @@
   </ul>
 
   {% if ads_list %}
-    <h2>Your Ads</h2>
+    <h2 class='text-center'>Your Ads</h2>
     <ul>
       {% for ad in ads_list %}
-        <li>{{ ad.book.title }} <a href={% url 'textbook_app:ad_edit' ad.id %}>edit</a></li>
+        <li>
+          <div class='container'>
+            <div class='panel panel-default'>
+              <div class='panel-heading'>
+                <h4 class='card-title'>{{ ad.book.title }}</h4>
+              </div>
+              <div class='panel-body'>
+                <a href={% url 'textbook_app:ad_edit' ad.id %} class='btn btn-primary'>edit</a>
+              </div>
+            </div>
+          </div>
+        </li>
       {% endfor %}
     </ul>
   {% else %}
