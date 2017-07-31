@@ -40,7 +40,13 @@
           <div v-if='isTextbookFormShown'>
             {{ textbookForm }}
           </div>
-          <button type='button' id='toggle-textbook' class="btn btn-primary" v-on:click='toggleTextbookForm'>[isTextbookFormShown ? 'Hide New Textbook Form' : 'No Existing Textbook? Add a new one!']</button>
+          <button type='button' id='toggle-textbook' class="btn btn-primary" v-on:click='toggleTextbookForm'>
+            {% if isTextbookFormShown %}
+            Hide New Textbook Form
+            {% else %}
+            No Existing Textbook? Add a new one!
+            {% endif %}
+          </button>
         </div>
         <div id='ad-form'>
           <h3>Ad Details</h3>
