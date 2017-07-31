@@ -11,7 +11,7 @@ class Textbook(models.Model):
     isbn = models.DecimalField('ISBN', max_digits=MAX_ISBN_DIGITS, decimal_places=0, primary_key=True)
     title = models.CharField('Book Title', max_length=200)
     author = models.CharField('Author', max_length=200)
-    description = models.TextField('Description')
+    description = models.TextField('Textbook Description')
 
 class TextbookForm(ModelForm):
     description = forms.CharField(required=False, widget=forms.Textarea)
@@ -41,6 +41,7 @@ class Ad(models.Model):
         default=GOOD,
         blank=False
     )
+    Ad_Description = models.TextField('Ad Description')
     # Forms a many-to-one relationship between users and ads
     # i.e. an ad belongs to only one user, but a user can have many ads
     # When a user's account is deleted, delete all of their ads too
@@ -52,7 +53,3 @@ class AdForm(ModelForm):
     class Meta:
         model = Ad
         exclude = ['poster', 'book']
-
-
-
-
