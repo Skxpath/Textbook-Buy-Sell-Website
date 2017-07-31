@@ -14,7 +14,7 @@ class Textbook(models.Model):
     description = models.TextField('Description')
 
 # Adds bootstrap classes to all form fields by default
-# snippet taken from hurlbz's answer here: https://stackoverflow.com/questions/19489699/how-to-add-class-id-placeholder-attributes-to-a-field-in-django-model-forms 
+# snippet taken from hurlbz's answer here: https://stackoverflow.com/questions/19489699/how-to-add-class-id-placeholder-attributes-to-a-field-in-django-model-forms
 class BaseModelForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(BaseModelForm, self).__init__(*args, **kwargs)
@@ -36,6 +36,11 @@ class TextbookForm(BaseModelForm):
     class Meta:
         model = Textbook
         fields = '__all__'
+
+class TextbookFormNoIsbn(BaseModelForm):
+    class Meta:
+        model= Textbook
+        exclude = ['isbn']
 
 class Ad(models.Model):
     price = models.DecimalField(max_digits=MAX_PRICE_DOLLAR_DIGITS + PRICE_CENTS_DIGITS, decimal_places=PRICE_CENTS_DIGITS)
