@@ -41,6 +41,7 @@ class Ad(models.Model):
         default=GOOD,
         blank=False
     )
+    #Ad Description, to describe in more detail the ad itself, rather than the textbook.
     Ad_Description = models.TextField('Ad Description')
     # Forms a many-to-one relationship between users and ads
     # i.e. an ad belongs to only one user, but a user can have many ads
