@@ -1,35 +1,33 @@
 {% extends 'textbook_app/base.html' %}
 
 {% block content %}
-{% load static %}
-<img src="{% static "fox.jpg" %}" alt="My image"/>
+    <div>
+      <div class="container">
+        <h1>Hello, {{ user.username }}</h1>
+        <div class="btn-group btn-group-justified btn-group-raised">
+            <a href="{% url 'textbook_app:ad_new' %}" class="btn btn-raised">Create Ad</a>
+            <a href="{% url 'textbook_app:ads' %}" class="btn btn-raised">View Ads</a>
+        </div>
 
-  <h1 class='lead'>Hello, {{ user.username }}</h1>
-
-  <ul id="actions">
-    <li><a href="{% url 'textbook_app:ad_new' %}">Create Ad</a></li>
-    <li><a href="{% url 'textbook_app:ads' %}">View Ads</a></li>
-  </ul>
-
-  {% if ads_list %}
-    <h2 class='text-center'>Your Ads</h2>
-    <ul>
-      {% for ad in ads_list %}
-        <li>
-          <div class='container'>
-            <div class='panel panel-default'>
-              <div class='panel-heading'>
-                <h4 class='card-title'>{{ ad.book.title }}</h4>
-              </div>
-              <div class='panel-body'>
-                <a href={% url 'textbook_app:ad_edit' ad.id %} class='btn btn-primary'>edit</a>
-              </div>
-            </div>
-          </div>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <h1>You haven't posted any ads yet</h1>
-  {% endif %}
+        {% if ads_list %}
+          <h2 class='text-center'>Your Ads</h2>
+          <ul>
+            {% for ad in ads_list %}
+              <li>
+                <div class='panel'>
+                  <div class='panel-heading'>
+                    <h4 class='card-title'>{{ ad.book.title }}</h4>
+                  </div>
+                  <div class='panel-body'>
+                    <a href={% url 'textbook_app:ad_edit' ad.id %} class='btn btn-primary'>edit</a>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <h1>You haven't posted any ads yet</h1>
+        {% endif %}
+      </div>
+    </div>
 {% endblock %}
