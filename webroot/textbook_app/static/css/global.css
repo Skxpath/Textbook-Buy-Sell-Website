@@ -1,0 +1,11 @@
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+/*This class is applied to html elements in django forms when a form returns error messages*/
+/*This doesn't look very good, but gets the job done*/
+.errorlist {
+  background-color: red;
+  color: white;
+}

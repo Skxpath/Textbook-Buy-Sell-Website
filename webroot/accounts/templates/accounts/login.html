@@ -1,11 +1,36 @@
-<h2>Login</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>
-  <div class='no-account'>
-    Don't have an account? <a href="{% url 'accounts:signup' %}">Create an account</a>
-    <br>
-    Forgot your password? <a href="{% url 'accounts:password_reset' %}">Reset your password</a>
+{% extends 'textbook_app/base.html' %}
+{% load account_form_filters %}
+
+{% block content %}
+  <div class='well container'>
+    <h2>Login</h2>
+    <form method="post">
+      {% csrf_token %}
+      <!-- {{ form.as_p }} -->
+      <!-- <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button> -->
+        {{form.non_field_errors}}
+      <!-- </div> -->
+      <!-- There's probably a better way to expand and style these out, but I couldn't for the life of me figure out how to -->
+        <div class="input-group">
+            <label for="{{ form.username.id_for_label }}">{{form.username.html_name}}: </label>
+            <input class="form-control" type="text" name="{{ form.username.html_name }}" maxlength="254" required autofocus id="{{ form.username.id_for_label }}" />
+            {{field.help_text}}
+            {{ field.errors }}
+        </div>
+        <div class="input-group">
+            <label for="{{ form.password.id_for_label }}">{{form.password.html_name}}: </label>
+            <input class="form-control" type="password" name="{{ form.password.html_name }}" maxlength="254" required autofocus id="{{ form.password.id_for_label }}" />
+            {{field.help_text}}
+            {{ field.errors }}
+        </div>
+<!-- <p><label for="id_password">Password:</label> <input type="password" name="password" required id="id_password" /></p> -->
+      <button class='btn btn-primary' type="submit">Login</button>
+      <div class='no-account'>
+        Don't have an account? <a href="{% url 'accounts:signup' %}">Create an account</a>
+        <br>
+        Forgot your password? <a href="{% url 'accounts:password_reset' %}">Reset your password</a>
+      </div>
+    </form>
   </div>
-</form>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'textbook_app/base.html' %}
+
+{% block content %}
+  {% csrf_token %}
+  <div id="app" class="container">
+    <div class="well bs-component">
+      {% if ad %}
+        <form action="{% url 'textbook_app:ad_edit' ad.id %}" method="post">
+      {% else %}
+        <form action="{% url 'textbook_app:ad_new' %}" method="post">
+      {% endif %}
+        {% csrf_token %}
+        <div id='textbook-form'>
+          {% if ad %}
+            <p class="lead">Current textbook:</p>
+            <div class="radio">
+              <label>
+                <input type='radio' name='existing-textbook' value='{{ ad.book.isbn }}' checked='checked'>
+                {{ ad.book.title }}
+              </label>
+            </div>
+          {% endif %}
+          <div id="textbook-search" v-if="!isTextbookFormShown">
+            <div class="form-group label-floating">
+              <label for="search" class="control-label">Search Existing Textbooks</label>
+              <input type='text' class="form-control" id='search' name='search' v-on:keyup='searchTextbooks'/>
+            </div>
+            <div id='search_results'>
+            </div>
+          </div>
+          <!-- Display all errors outside the form field because the form is hidden by default when the page is loaded (see ad_new.js) -->
+          <!-- TODO: make the textbook form not hidden when it is returned with validation errors -->
+          {% for key, value in textbookForm.errors.items %}
+            <div class="alert alert-dismissible alert-danger">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <strong>Oh snap!</strong>
+              {{ value }}
+            </div>
+          {% endfor %}
+          <div v-if='isTextbookFormShown'>
+            {{ textbookForm }}
+          </div>
+          <button type='button' id='toggle-textbook' class="btn btn-primary" v-on:click='toggleTextbookForm'>
+            {% if isTextbookFormShown %}
+            Hide New Textbook Form
+            {% else %}
+            No Existing Textbook? Add a new one!
+            {% endif %}
+          </button>
+        </div>
+        <div id='ad-form'>
+          <h3>Ad Details</h3>
+          {{ adForm }}
+        </div>
+        {% if ad %}
+          <input type="submit" class="btn btn-primary" value="Edit Ad" />
+        {% else %}
+          <input type="submit" class="btn btn-primary" value="Post Ad" />
+        {% endif %}
+      </form>
+    </div>
+  </div>
+  {% load static %}
+  <script src="{% static 'ad_new.js' %}"></script>
+{% endblock %}
