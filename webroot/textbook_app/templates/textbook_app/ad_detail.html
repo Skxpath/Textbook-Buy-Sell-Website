@@ -2,20 +2,30 @@
 
 {% block content %}
   {% if ad %}
-  <dl class="display">
-  <dt>Book: </dt><dd>
-  <div class="field"><a href="{% url 'textbook_app:textbook_edit' ad.book.isbn%}">{{ad.book.title}}</a></div>
-  </dd>
-  <dt>Price: </dt><dd>
-  <div class="field">${{ad.price}}</div>
-  </dd>
-  <dt>Posted By: </dt><dd>
-  <div class="field">{{ad.poster}}</div>
-  </dd>
-  <dt>Book description: </dt><dd>
-  <div class="field">{{ad.book.description}}</div>
-  </dd>
-  </dl>
+
+  <div class="well container">
+    <dl class="display">
+      <dt><i class="material-icons">book</i>Book</dt>
+      <dd>
+        <div class="container lead"><a href="{% url 'textbook_app:textbook_edit' ad.book.isbn%}">{{ad.book.title}}</a></div>
+      </dd>
+
+      <dt><i class="material-icons">shopping_cart</i>Price</dt>
+      <dd>
+        <div class="container lead">${{ad.price}}</div>
+      </dd>
+
+      <dt><i class="material-icons">face</i>Posted By</dt>
+      <dd>
+        <div class="container lead">{{ad.poster}}</div>
+      </dd>
+
+      <dt><i class="material-icons">description</i>Book description</dt>
+      <dd>
+        <div class="container lead">{{ad.book.description}}</div>
+      </dd>
+    </dl>
+  </div>
   {% else %}
     <h1>Error finding ad {ad.id}</h1>
   {% endif %}

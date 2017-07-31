@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, render_to_response
 from django.contrib.auth.decorators import login_required
-from .models import Ad, Textbook, AdForm, TextbookForm
+from .models import Ad, Textbook, AdForm, TextbookForm, TextbookFormNoIsbn
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -49,11 +49,17 @@ def profile(request):
     }
     return render(request, 'textbook_app/profile.html', context)
 
-@login_required
-def ad_new(request):
+# This function is horrendously complex... sorry!
+# TODO: make this less complex
+def ad_new_or_edit(request, isEditAd, ad_id):
+    if isEditAd:
+        ad = get_object_or_404(Ad, pk=ad_id)
     if request.method == 'POST':
         textbookForm = TextbookForm(request.POST)
-        adForm = AdForm(request.POST)
+        if isEditAd:
+            adForm = AdForm(request.POST, instance=ad)
+        else:
+            adForm = AdForm(request.POST)
         textbook_valid = textbookForm.is_valid()
         ad_valid = adForm.is_valid()
         if textbook_valid and ad_valid:
@@ -63,44 +69,53 @@ def ad_new(request):
         elif not textbookForm.has_changed() and 'existing-textbook' in request.POST and ad_valid:
             textbook = get_object_or_404(Textbook, pk=request.POST['existing-textbook'])
         else:
+            if isEditAd:
+                context = {'ad': ad, 'textbookForm': textbookForm, 'adForm': adForm}
+            else:
+                context = {'textbookForm': textbookForm, 'adForm': adForm}
             # Return the form with any server side error messages (ex: ISBN already exists)
-            return render(request, 'textbook_app/ad_new.html', {'textbookForm': textbookForm, 'adForm': adForm})
+            return render(request, 'textbook_app/ad_new_or_edit.html', context)
         ad = adForm.save(commit=False)
         ad.book = textbook
         ad.poster = request.user
         ad.save()
-        return HttpResponseRedirect(reverse('textbook_app:ads'))
+        if isEditAd:
+            return HttpResponseRedirect(reverse('textbook_app:profile'))
+        else:
+            return HttpResponseRedirect(reverse('textbook_app:ads'))
     else:
         textbookForm = TextbookForm()
-        adForm = AdForm()
-        return render(request, 'textbook_app/ad_new.html', {'textbookForm': textbookForm, 'adForm': adForm})
+        if isEditAd:
+            adForm = AdForm(instance=ad)
+            context = {'ad': ad, 'textbookForm': textbookForm, 'adForm': adForm}
+        else:
+            adForm = AdForm()
+            context = {'textbookForm': textbookForm, 'adForm': adForm}
+        return render(request, 'textbook_app/ad_new_or_edit.html', context)
+
+@login_required
+def ad_new(request):
+    return ad_new_or_edit(request, False, 1)
 
 # TODO: Validate only the user that created the ad can edit, show error otherwise
 # How do we handle non 2XX status codes? Redirect to error page?
 @login_required
 def ad_edit(request, ad_id):
-    ad = get_object_or_404(Ad, pk=ad_id)
-    textbook = get_object_or_404(Textbook, pk=ad.book.isbn)
-    if request.method == 'POST':
-        adForm = AdForm(request.POST, instance=ad)
-        if adForm.is_valid():
-            adForm.save()
-            return HttpResponseRedirect(reverse('textbook_app:ads'))
-    else:
-        adForm = AdForm(instance=ad)
-    return render(request, 'textbook_app/ad_edit.html', {'ad':ad, 'adForm': adForm, 'textbook':textbook})
+    return ad_new_or_edit(request, True, ad_id)
 
+@login_required
 def textbook_edit(request, textbook_isbn):
+    textbook = get_object_or_404(Textbook, pk=textbook_isbn)
     if request.method == "POST":
-        textbook = get_object_or_404(Textbook, pk=textbook_isbn)
-        textbook.title = request.POST['title']
-        textbook.author = request.POST['author']
-        textbook.description = request.POST['description']
-        textbook.save()
-        return HttpResponseRedirect(reverse('textbook_app:ads'))
+        textbookForm = TextbookFormNoIsbn(request.POST, instance=textbook)
+        if textbookForm.is_valid():
+            textbookForm.save()
+            return HttpResponseRedirect(reverse('textbook_app:ads'))
+        else:
+            return render(request, "textbook_app/textbook_edit.html", {'textbook': textbook, 'textbookForm': textbookForm})
     else:
-        textbook = get_object_or_404(Textbook, pk=textbook_isbn)
-        return render(request, "textbook_app/textbook_edit.html", {'textbook': textbook})
+        textbookForm = TextbookFormNoIsbn(instance=textbook)
+        return render(request, "textbook_app/textbook_edit.html", {'textbook': textbook, 'textbookForm': textbookForm})
 
 def textbook_search(request):
     if request.method == 'POST':

@@ -13,12 +13,34 @@ class Textbook(models.Model):
     author = models.CharField('Author', max_length=200)
     description = models.TextField('Description')
 
-class TextbookForm(ModelForm):
+# Adds bootstrap classes to all form fields by default
+# snippet taken from hurlbz's answer here: https://stackoverflow.com/questions/19489699/how-to-add-class-id-placeholder-attributes-to-a-field-in-django-model-forms
+class BaseModelForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(BaseModelForm, self).__init__(*args, **kwargs)
+        # add common css classes to all widgets
+        for field in iter(self.fields):
+            #get current classes from Meta
+            classes = self.fields[field].widget.attrs.get("class")
+            if classes is not None:
+                classes += " form-control"
+            else:
+                classes = "form-control"
+            self.fields[field].widget.attrs.update({
+                'class': classes
+            })
+
+class TextbookForm(BaseModelForm):
     description = forms.CharField(required=False, widget=forms.Textarea)
 
     class Meta:
         model = Textbook
         fields = '__all__'
+
+class TextbookFormNoIsbn(BaseModelForm):
+    class Meta:
+        model= Textbook
+        exclude = ['isbn']
 
 class Ad(models.Model):
     price = models.DecimalField(max_digits=MAX_PRICE_DOLLAR_DIGITS + PRICE_CENTS_DIGITS, decimal_places=PRICE_CENTS_DIGITS)
@@ -48,11 +70,7 @@ class Ad(models.Model):
     # We want to ensure that every ad is associated with a Textbook, so all ads for a textbook can be found together
     book = models.ForeignKey(Textbook, on_delete=models.CASCADE)
 
-class AdForm(ModelForm):
+class AdForm(BaseModelForm):
     class Meta:
         model = Ad
         exclude = ['poster', 'book']
-
-
-
-
