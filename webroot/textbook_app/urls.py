@@ -7,6 +7,7 @@ app_name = 'textbook_app'
 urlpatterns = [
     url(r'^ads_list/', views.ads_list, name='ads'),
     url(r'^ads/(?P<ad_id>[0-9]+)/edit', views.ad_edit, name='ad_edit'),
+    url(r'^ads/(?P<ad_id>[0-9]+)/delete', views.ad_delete, name='ad_delete'),
     url(r'^ads/(?P<ad_id>[0-9]+)', views.ad_detail, name='ad_detail'),
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^ad_new$', views.ad_new, name='ad_new'),
