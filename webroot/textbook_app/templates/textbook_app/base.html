@@ -35,9 +35,12 @@
     <!-- Dropdown.js -->
     <link href="//cdn.rawgit.com/FezVrasta/dropdown.js/master/jquery.dropdown.css" rel="stylesheet">
 
-
     <!-- Global CSS Styles -->
     <link rel="stylesheet" href="{% static "css/global.css" %}">
+
+    <!-- Allows extending pages to add more style sheets and stuff -->
+    {% block header %}
+    {% endblock %}
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">

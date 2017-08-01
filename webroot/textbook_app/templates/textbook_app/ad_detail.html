@@ -2,25 +2,6 @@
 
 {% block content %}
   {% if ad %}
-<<<<<<< webroot/textbook_app/templates/textbook_app/ad_detail.html
-  <dl class="display">
-  <dt>Book: </dt><dd>
-  <div class="field"><a href="{% url 'textbook_app:textbook_edit' ad.book.isbn%}">{{ad.book.title}}</a></div>
-  </dd>
-  <dt>Price: </dt><dd>
-  <div class="field">${{ad.price}}</div>
-  </dd>
-  <dt>Posted By: </dt><dd>
-  <div class="field">{{ad.poster}}</div>
-  </dd>
-  <dt>Book description: </dt><dd>
-  <div class="field">{{ad.book.description}}</div>
-  </dd>
-  <dt>Ad description: </dt><dd>
-  <div class="field">{{ad.Ad_Description}}</div>
-  </dd>
-  </dl>
-=======
 
   <div class="well container">
     <dl class="display">
@@ -43,10 +24,15 @@
       <dd>
         <div class="container lead">{{ad.book.description}}</div>
       </dd>
-        
-       <dt><i class="material-icons">description</i>Ad description</dt>
+
+     <dt><i class="material-icons">description</i>Ad description</dt>
       <dd>
         <div class="container lead">{{ad.Ad_Description}}</div>
+      </dd>
+
+      <dt>Send a message</dt>
+      <dd>
+        <a href="{% url 'textbook_app:chat' ad.poster.id %}">Click me!</a>
       </dd>
     </dl>
   </div>

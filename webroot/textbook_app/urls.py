@@ -12,4 +12,6 @@ urlpatterns = [
     url(r'^ad_new$', views.ad_new, name='ad_new'),
     url(r'^(?P<textbook_isbn>[0-9]+)/edit', views.textbook_edit, name='textbook_edit'),
     url(r'^textbook_search$', views.textbook_search, name='textbook_search'),
+    url(r'^chat/(?P<receiver_user_id>[\w-]{,50})/$', views.chat, name='chat'),
+    url(r'chat/send$', views.chat_send_message, name='chat_send_message')
 ]

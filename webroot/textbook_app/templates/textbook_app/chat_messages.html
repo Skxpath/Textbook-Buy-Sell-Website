@@ -1,0 +1,37 @@
+{% extends "textbook_app/base.html" %}
+
+{% block header %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static "css/chat_messages.css" %}">
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    {% load staticfiles %}
+    <h1>Messages with {{ receiver.username }}</h1>
+    <form id="chatform" action="{% url 'textbook_app:chat_send_message' %}" method='post'>
+      {% csrf_token %}
+      <div id="chat-messages">
+        {% if messages.count > 0 %}
+          {% for message in messages %}
+            <div class='well message'>
+              <p>{{ message.message }}</p>
+              <p class='text-right'>{{ message.user }}</p>
+            </div>
+          {% endfor %}
+        {% else %}
+          No Messages Yet!
+        {% endif %}
+      </div>
+      <br>
+      <div id='message-window'>
+          <div class='input-group'>
+            Say something to {{ receiver.username }}:
+            <input type='hidden' name='receiver_user_id' value='{{ receiver.id }}'>
+            <input id="message" class='form-control' name='message' type="text" placeholder="message">
+            <button class='btn btn-primary' type="submit" id="go">Say it</button>
+          </div>
+      </div>
+    </form>
+  </div>
+{% endblock content %}
