@@ -3,24 +3,6 @@
 {% block content %}
   {% if ad %}
 
-  <dl class="display">
-  <dt>Book: </dt><dd>
-  <div class="field"><a href="{% url 'textbook_app:textbook_edit' ad.book.isbn%}">{{ad.book.title}}</a></div>
-  </dd>
-  <dt>Price: </dt><dd>
-  <div class="field">${{ad.price}}</div>
-  </dd>
-  <dt>Posted By: </dt><dd>
-  <div class="field">{{ad.poster}}</div>
-  </dd>
-  <dt>Book description: </dt><dd>
-  <div class="field">{{ad.book.description}}</div>
-  </dd>
-  <dt>Ad description: </dt><dd>
-  <div class="field">{{ad.Ad_Description}}</div>
-  </dd>
-  </dl>
-
   <div class="well container">
     <dl class="display">
       <dt><i class="material-icons">book</i>Book</dt>
