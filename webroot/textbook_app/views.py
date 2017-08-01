@@ -5,6 +5,7 @@ from .models import Ad, Textbook, AdForm, TextbookForm, TextbookFormNoIsbn
 from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth import get_user_model
 
 # TODO: Let users set this value from a form field
 NUM_ADS_PER_PAGE = 5
@@ -38,6 +39,10 @@ def ads_list(request):
 @login_required
 def ad_detail(request, ad_id):
     ad = get_object_or_404(Ad, pk=ad_id)
+    return render(request, 'textbook_app/ad_detail.html', {'ad': ad})
+
+def profile_id(request, profile_id):
+    user = get_object_or_404(get_user_model(), pk=profile_id)
     return render(request, 'textbook_app/ad_detail.html', {'ad': ad})
 
 @login_required
