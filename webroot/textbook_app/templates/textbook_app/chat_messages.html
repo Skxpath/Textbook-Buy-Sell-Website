@@ -8,29 +8,60 @@
 {% block content %}
   <div class="container">
     {% load staticfiles %}
-    <h1>Messages with {{ receiver.username }}</h1>
+    <h1>Messages with {{ receiver.username }} ({{ receiver.first_name }} {{ receiver.last_name }})</h1>
     <form id="chatform" action="{% url 'textbook_app:chat_send_message' %}" method='post'>
       {% csrf_token %}
       <div id="chat-messages">
         {% if messages.count > 0 %}
-          {% for message in messages %}
-            <div class='well message'>
-              <p>{{ message.message }}</p>
-              <p class='text-right'>{{ message.user }}</p>
-            </div>
-          {% endfor %}
+          <ul>
+            {% for message in messages %}
+              <li>
+                <div class='row'>
+                  <!-- Note message.user is a string, not a user object... This took me a while to realize! -->
+                  {% if message.user == receiver.username %}
+                    <div class='col-sm-9'>
+                      <div class='well message'>
+                        <p class='lead'>{{ message.message }}</p>
+                        <p>{{ message.user }}</p>
+                      </div>
+                    </div>
+                    <div class='col-sm-3'></div>
+                  {% else %}
+                    <div class='col-sm-3'>
+                    </div>
+                    <div class='col-sm-9'>
+                      <div class='well message'>
+                        <p class='lead'>{{ message.message }}</p>
+                        <p class='text-right'>{{ message.user }}</p>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
         {% else %}
           No Messages Yet!
         {% endif %}
       </div>
       <br>
       <div id='message-window'>
-          <div class='input-group'>
-            Say something to {{ receiver.username }}:
-            <input type='hidden' name='receiver_user_id' value='{{ receiver.id }}'>
-            <input id="message" class='form-control' name='message' type="text" placeholder="message">
-            <button class='btn btn-primary' type="submit" id="go">Say it</button>
+        <div class='row'>
+          <div class='col-sm-7'></div>
+          <div class='col-sm-5'>
+            <div class='form-group label-floating'>
+              <input type='hidden' name='receiver_user_id' value='{{ receiver.id }}'>
+              <label for='message' class='control-label'>
+                Say something to {{ receiver.username }}
+                {% if receiver.username == sender.username %}
+                  (Why are you talking to yourself?)
+                {%endif%}
+              </label>
+              <input id="message" class='form-control' name='message' type="text">
+              <button class='btn btn-primary' type="submit" id="go">Say it</button>
+            </div>
           </div>
+        </div>
       </div>
     </form>
   </div>

@@ -132,7 +132,6 @@ def textbook_search(request):
 def chat(request, receiver_user_id):
     receiver_user = get_object_or_404(get_user_model(), pk=receiver_user_id)
     chats = Chat.objects.filter(users=request.user).filter(users=receiver_user)
-    # chats = Chat.objects.filter(Q(users__username=request.user.username) & Q(users__username=receiver_user))
     # If a chat doesn't exist, display an empty messages page
     if chats.count() < 1:
         context = {
@@ -158,7 +157,6 @@ def chat_send_message(request):
         receiver_user_id = request.POST['receiver_user_id']
         receiver = get_object_or_404(get_user_model(), pk=receiver_user_id)
         chats = Chat.objects.filter(users=request.user).filter(users=receiver)
-        # chats = Chat.objects.filter(Q(users__username=request.user.username) & Q(users__username=receiver))
         # Create a new chat upon sending of first message if a chat doesn't exist
         # TODO: fix race condition that could occur if two people tried to make a chat with one another at the same time
         # probably using database transactions or something
@@ -175,3 +173,13 @@ def chat_send_message(request):
         return HttpResponseRedirect(reverse('textbook_app:chat', kwargs={'receiver_user_id': receiver.id}))
     else:
         return Http404("This url only accepts POST requests")
+
+@login_required
+def chat_list(request):
+    user_chats = Chat.objects.filter(users=request.user)
+    recipient_users_list = []
+    for chat in user_chats:
+        for user in chat.users.all():
+            if user != request.user:
+                recipient_users_list.append(user)
+    return render(request, "textbook_app/chat_list.html", {'chat_recipient_list': recipient_users_list})
