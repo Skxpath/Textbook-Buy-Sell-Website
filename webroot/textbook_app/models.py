@@ -32,6 +32,7 @@ class BaseModelForm(ModelForm):
 
 class TextbookForm(BaseModelForm):
     description = forms.CharField(required=False, widget=forms.Textarea)
+    isbn = forms.IntegerField(min_value=0)
 
     class Meta:
         model = Textbook
