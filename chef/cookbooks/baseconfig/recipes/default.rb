@@ -40,7 +40,7 @@ end
 execute 'django_init_dev_database' do
   cwd '/home/ubuntu/project/webroot/'
   user 'ubuntu'
-  command 'python3 manage.py makemigrations textbook_app && python3 manage.py migrate'
+  command 'python3 manage.py makemigrations textbook_app --merge && python3 manage.py migrate'
 end
 execute 'django_init_server' do
   user 'ubuntu'
