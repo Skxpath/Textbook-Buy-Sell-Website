@@ -17,7 +17,10 @@
                 <h4 class='card-title'>{{ ad.book.title }}</h4>
               </div>
               <div class='panel-body'>
-                <div class='lead'><i class="material-icons">face</i> {{ ad.poster.username }}</div>
+                <div class='lead'>
+                  <i class="material-icons">face</i>
+                  <a href="{% url 'textbook_app:profile_id' ad.poster.id %}">{{ ad.poster.username }}</a>
+                </div>
                 <span class='lead pull-left'><i class="material-icons">shopping_cart</i> ${{ ad.price }}</span>
                 <a href={% url 'textbook_app:ad_detail' ad.id %} class='btn btn-primary pull-right'>details</a>
               </div>

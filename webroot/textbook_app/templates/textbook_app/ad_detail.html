@@ -17,7 +17,7 @@
 
       <dt><i class="material-icons">face</i>Posted By</dt>
       <dd>
-        <div class="container lead">{{ad.poster}}</div>
+        <div class="container lead"><a href="{% url 'textbook_app:profile_id' ad.poster.id %}">{{ad.poster}}</a></div>
       </dd>
 
       <dt><i class="material-icons">description</i>Book description</dt>
