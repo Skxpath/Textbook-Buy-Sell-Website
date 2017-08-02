@@ -50,14 +50,7 @@ def profile(request):
     return render(request, 'textbook_app/profile.html', context)
 
 def ad_delete(request, ad_id):
-    # Get the ad that is to be deleted and the textbook of that ad
     ad_tobe_deleted = get_object_or_404(Ad, pk=ad_id)
-    book_in_ad = ad_tobe_deleted.book
-    # Get number of ads this textbook is currently offered in.
-    num_ads_for_book = Ad.objects.filter(book__isbn=book_in_ad.isbn).count()
-    # If this book is only left in this ad then delete this book
-    if num_ads_for_book < 2:
-        book_in_ad.delete()
     ad_tobe_deleted.delete()
     return HttpResponseRedirect(reverse('textbook_app:profile'))
 
