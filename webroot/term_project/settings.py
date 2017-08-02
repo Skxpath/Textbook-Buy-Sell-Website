@@ -137,4 +137,9 @@ AUTH_USER_MODEL = "accounts.User"
 
 # Used for sending verification emails to users when they sign up
 # the console email backedn currently configured doesn't actually send emails; it just prints what would be sent to the console
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'trevy17'
+EMAIL_HOST_PASSWORD = 'dBmPTCuwmYZR3QCVGvmh' # It's bad practice to put passwords in plain text, but YOLO!
+EMAIL_USE_TLS = True
