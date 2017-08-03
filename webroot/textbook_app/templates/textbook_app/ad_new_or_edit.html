@@ -41,11 +41,12 @@
             {{ textbookForm }}
           </div>
           <button type='button' id='toggle-textbook' class="btn btn-primary" v-on:click='toggleTextbookForm'>
-            {% if isTextbookFormShown %}
+          <div v-if='isTextbookFormShown'>
             Hide New Textbook Form
-            {% else %}
+          </div>
+            <div v-else>
             No Existing Textbook? Add a new one!
-            {% endif %}
+          </div>
           </button>
         </div>
         <div id='ad-form'>
