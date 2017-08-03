@@ -3,8 +3,16 @@
 {% block content %}
   {% if textbook %}
   <div class="container well">
+    <div class='bs-component'>
+      <i class="material-icons pull-right" data-toggle="tooltip" data-placement="left" title=""
+        data-original-title="Textbook Pages are like wiki pages: anyone can edit them. This way, the community can work together to provide the best information for textbooks, and we ensure that we only store one copy of each textbook, so all ads related to a textbook reference the same textbook.">
+        info
+      </i>
+    </div>
     <form action="{% url 'textbook_app:textbook_edit' textbook.isbn %}" method="post">
       {% csrf_token %}
+      <label>ISBN: {{ textbook.isbn }}</label>
+      <br>
       {{ textbookForm }}
       <input type="submit" class="btn btn-primary" value="Edit Book" />
     </form>
