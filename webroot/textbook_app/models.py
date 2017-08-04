@@ -12,7 +12,7 @@ class Textbook(models.Model):
     isbn = models.DecimalField('ISBN', max_digits=MAX_ISBN_DIGITS, decimal_places=0, primary_key=True)
     title = models.CharField('Book Title', max_length=200)
     author = models.CharField('Author', max_length=200)
-    description = models.TextField('Textbook Description')
+    description = models.TextField('Textbook Description', blank=True, default='')
 
 # Adds bootstrap classes to all form fields by default
 # snippet taken from hurlbz's answer here: https://stackoverflow.com/questions/19489699/how-to-add-class-id-placeholder-attributes-to-a-field-in-django-model-forms
@@ -41,7 +41,7 @@ class TextbookForm(BaseModelForm):
 
 class TextbookFormNoIsbn(BaseModelForm):
     class Meta:
-        model= Textbook
+        model = Textbook
         exclude = ['isbn']
 
 class Ad(models.Model):
@@ -66,7 +66,7 @@ class Ad(models.Model):
         blank=False
     )
     #Ad Description, to describe in more detail the ad itself, rather than the textbook.
-    Ad_Description = models.TextField('Ad Description')
+    Ad_Description = models.TextField('Ad Description', blank=True, default='')
     # Forms a many-to-one relationship between users and ads
     # i.e. an ad belongs to only one user, but a user can have many ads
     # When a user's account is deleted, delete all of their ads too

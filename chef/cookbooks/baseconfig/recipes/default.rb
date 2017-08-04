@@ -29,7 +29,7 @@ end
 execute 'load_initial_db_data' do
   cwd '/home/ubuntu/project'
   user 'ubuntu'
-  command 'psql mydb < initialdata.pgsql'
+  command 'psql mydb < initialdata.txt'
 end
 
 # Setup Django Webserver
@@ -47,7 +47,4 @@ execute 'django_init_server' do
   cwd '/home/ubuntu/project/webroot'
   command 'nohup python3 manage.py runserver 0.0.0.0:8080 &'
 end
-# execute 'django_populate_dev_database' do
-#   cwd '/home/ubuntu/project/mysite'
-#   command 'python3 manage.py loaddata initial_data.json'
-# end
+
