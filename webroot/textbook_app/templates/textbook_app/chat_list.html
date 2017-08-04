@@ -1,0 +1,29 @@
+{% extends 'textbook_app/base.html' %}
+
+<!-- Rows and columns are just used to center things and prevent the chat icons from filling the entire screen -->
+{% block content %}
+  <div class="container">
+        <h1 class='text-center'>Conversations</h1>
+        {% if chat_recipient_list|length > 0 %}
+          {% for user in chat_recipient_list %}
+            <ul>
+              <li>
+                <div class='row'>
+                  <div class='col-sm-3'></div>
+                  <div class='col-sm-6'>
+                    <div class='well'>
+                      <i class='material-icons'>face</i>
+                      <span class='lead'>{{ user.username }}</span>
+                      <a class='btn btn-primary pull-right' href="{% url 'textbook_app:chat' user.id %}">Go to chat</a>
+                    </div>
+                  </div>
+                  <div class='col-3'></div>
+                </div>
+              </li>
+            </ul>
+          {% endfor %}
+        {% else %}
+          <p class='lead text-center'>You have no conversations yet. Go talk to some people (not yourself)!</span>
+        {% endif %}
+  </div>
+{% endblock %}

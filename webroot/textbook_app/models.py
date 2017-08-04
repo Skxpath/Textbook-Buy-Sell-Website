@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.forms import ModelForm
 from django import forms
+from django.utils import timezone
 
 MAX_ISBN_DIGITS = 13
 MAX_PRICE_DOLLAR_DIGITS = 4
@@ -77,3 +78,13 @@ class AdForm(BaseModelForm):
     class Meta:
         model = Ad
         exclude = ['poster', 'book']
+
+class Chat(models.Model):
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='chats')
+    # label = models.SlugField(unique=True)
+
+class Message(models.Model):
+    chat = models.ForeignKey(Chat, related_name='messages')
+    user = models.TextField()
+    message = models.TextField()
+    timestamp = models.DateTimeField(default=timezone.now, db_index=True)
