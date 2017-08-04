@@ -43,6 +43,15 @@ def ad_detail(request, ad_id):
     ad = get_object_or_404(Ad, pk=ad_id)
     return render(request, 'textbook_app/ad_detail.html', {'ad': ad})
 
+def profile_id(request, profile_id):
+    user = get_object_or_404(get_user_model(), pk=profile_id)
+    user_ads = Ad.objects.filter(poster=user.id)
+    context = {
+        'user': user,
+        'ads_list': user_ads,
+    }
+    return render(request, 'textbook_app/profile_id.html', context)
+
 @login_required
 def profile(request):
     user_ads = Ad.objects.filter(poster=request.user.id)
