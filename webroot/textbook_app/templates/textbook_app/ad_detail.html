@@ -4,32 +4,42 @@
   {% if ad %}
 
   <div class="well container">
-    <dl class="display">
-      <dt><i class="material-icons">book</i>Book</dt>
-      <dd>
-        <div class="container lead"><a href="{% url 'textbook_app:textbook_edit' ad.book.isbn%}">{{ad.book.title}}</a></div>
-      </dd>
+    <div class='col-sm-9'>
+      <dl class="display">
+        <dt><i class="material-icons">book</i>Book</dt>
+        <dd>
+          <div class="container lead"><a href="{% url 'textbook_app:textbook_edit' ad.book.isbn%}">{{ad.book.title}}</a></div>
+        </dd>
 
-      <dt><i class="material-icons">shopping_cart</i>Price</dt>
-      <dd>
-        <div class="container lead">${{ad.price}}</div>
-      </dd>
+        <dt><i class="material-icons">shopping_cart</i>Price</dt>
+        <dd>
+          <div class="container lead">${{ad.price}}</div>
+        </dd>
 
-      <dt><i class="material-icons">face</i>Posted By</dt>
-      <dd>
-        <div class="container lead">{{ad.poster}}</div>
-      </dd>
+        <dt><i class="material-icons">face</i>Posted By</dt>
+        <dd>
+          <div class="container lead">{{ad.poster}}</div>
+        </dd>
 
-      <dt><i class="material-icons">description</i>Book description</dt>
-      <dd>
-        <div class="container lead">{{ad.book.description}}</div>
-      </dd>
+        <dt><i class="material-icons">description</i>Book description</dt>
+        <dd>
+          <div class="container lead">{{ad.book.description}}</div>
+        </dd>
 
-       <dt><i class="material-icons">description</i>Ad description</dt>
-      <dd>
-        <div class="container lead">{{ad.Ad_Description}}</div>
-      </dd>
-    </dl>
+        <dt><i class="material-icons">description</i>Ad description</dt>
+        <dd>
+          <div class="container lead">{{ad.Ad_Description}}</div>
+        </dd>
+      </dl>
+    </div>
+    <div class='col-sm-3'>
+      <span class='lead pull-right'>
+        <a href="{% url 'textbook_app:chat' ad.poster.id %}">
+          Send a message
+          <i class="material-icons">message</i>
+        </a>
+      </span>
+    </div>
   </div>
   {% else %}
     <h1>Error finding ad {ad.id}</h1>

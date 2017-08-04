@@ -1,10 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, render_to_response
 from django.contrib.auth.decorators import login_required
-from .models import Ad, Textbook, AdForm, TextbookForm, TextbookFormNoIsbn
+from .models import Ad, Textbook, AdForm, TextbookForm, TextbookFormNoIsbn, Chat, Message
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+from django.utils import timezone
 
 # TODO: Let users set this value from a form field
 NUM_ADS_PER_PAGE = 5
@@ -130,3 +133,59 @@ def textbook_search(request):
         search_text = ''
     textbooks = Textbook.objects.filter(title__contains=search_text)
     return render_to_response('textbook_app/ajax_textbook_search.html', {'textbooks': textbooks})
+
+@login_required
+def chat(request, receiver_user_id):
+    receiver_user = get_object_or_404(get_user_model(), pk=receiver_user_id)
+    chats = Chat.objects.filter(users=request.user).filter(users=receiver_user)
+    # If a chat doesn't exist, display an empty messages page
+    if chats.count() < 1:
+        context = {
+            'sender': request.user,
+            'receiver': receiver_user,
+        }
+    else:
+        # If a chat exists, get the first match (there should only be one chat between two users)
+        chat = chats[0]
+        # We want to show the last 50 messages, ordered most-recent-last
+        numMessagesToDisplay = 50
+        messages = chat.messages.order_by('-timestamp')[:numMessagesToDisplay].reverse()
+        context = {
+            'sender': request.user,
+            'receiver': receiver_user,
+            'messages': messages,
+        }
+    return render(request, "textbook_app/chat_messages.html", context)
+
+@login_required
+def chat_send_message(request):
+    if request.method == 'POST':
+        receiver_user_id = request.POST['receiver_user_id']
+        receiver = get_object_or_404(get_user_model(), pk=receiver_user_id)
+        chats = Chat.objects.filter(users=request.user).filter(users=receiver)
+        # Create a new chat upon sending of first message if a chat doesn't exist
+        # TODO: fix race condition that could occur if two people tried to make a chat with one another at the same time
+        # probably using database transactions or something
+        if (chats.count() < 1):
+            chat = Chat()
+            chat.save()
+            chat.users.add(request.user, receiver)
+            chat.save()
+        else:
+            chat = chats[0]
+
+        message = Message(chat=chat, user=request.user, message=request.POST['message'], timestamp=timezone.now())
+        message.save()
+        return HttpResponseRedirect(reverse('textbook_app:chat', kwargs={'receiver_user_id': receiver.id}))
+    else:
+        return Http404("This url only accepts POST requests")
+
+@login_required
+def chat_list(request):
+    user_chats = Chat.objects.filter(users=request.user)
+    recipient_users_list = []
+    for chat in user_chats:
+        for user in chat.users.all():
+            if user != request.user:
+                recipient_users_list.append(user)
+    return render(request, "textbook_app/chat_list.html", {'chat_recipient_list': recipient_users_list})
