@@ -21,6 +21,7 @@ tests/report/
 #Additional gitignore items for our project
 *~
 .vagrant
+.DS_Store
 
 *.pyc
 *.sqlite3
