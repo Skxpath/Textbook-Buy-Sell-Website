@@ -39,6 +39,12 @@ class TextbookForm(BaseModelForm):
         model = Textbook
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        super(TextbookForm, self).__init__(*args, **kwargs)
+        self.fields['isbn'].widget.attrs.update({'v-model': 'textbookIsbn'})
+        self.fields['title'].widget.attrs.update({'v-model': 'textbookTitle'})
+        self.fields['author'].widget.attrs.update({'v-model': 'textbookAuthor'})
+
 class TextbookFormNoIsbn(BaseModelForm):
     class Meta:
         model = Textbook

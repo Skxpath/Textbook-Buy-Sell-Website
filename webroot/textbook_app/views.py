@@ -3,11 +3,12 @@ from django.shortcuts import render, render_to_response
 from django.contrib.auth.decorators import login_required
 from .models import Ad, Textbook, AdForm, TextbookForm, TextbookFormNoIsbn, Chat, Message
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, HttpResponse, Http404, JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.utils import timezone
+import requests
 
 # TODO: Let users set this value from a form field
 NUM_ADS_PER_PAGE = 5
@@ -145,6 +146,14 @@ def textbook_search(request):
     else:
         textbooks = {}
     return render_to_response('textbook_app/ajax_textbook_search.html', {'textbooks': textbooks})
+
+def get_textbook_info_by_isbn(request):
+    # if request.method == 'POST'
+    #     isbn = request.POST['isbn']
+    #     url = 'https://openlibrary.org/api/books?bibkeys=ISBN:'+isbn+'&format=json&jscmd=data'
+    #     r = requests.get(url)
+    #     data = json.load(r.json())
+    return JsonResponse({'author':'server author', 'title':'server test title'})
 
 @login_required
 def chat(request, receiver_user_id):
