@@ -140,7 +140,10 @@ def textbook_search(request):
         search_text = request.POST['search_text']
     else:
         search_text = ''
-    textbooks = Textbook.objects.filter(title__contains=search_text)
+    if search_text:
+        textbooks = Textbook.objects.filter(Q(title__contains=search_text) | Q(isbn__contains=search_text))
+    else:
+        textbooks = {}
     return render_to_response('textbook_app/ajax_textbook_search.html', {'textbooks': textbooks})
 
 @login_required
