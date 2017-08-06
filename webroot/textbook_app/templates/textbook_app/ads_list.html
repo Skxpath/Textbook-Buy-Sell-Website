@@ -6,6 +6,11 @@
       <div class="form-group label-floating">
         <label for="ad-search-text" class="control-label">Search Ads By Textbook</label>
         <input type='text' class="form-control" name='ad-search-text'/>
+        <select class="form-control" name='ad-sort-by-price' style="max-width:15%;" onchange="this.form.submit()">
+          <option value="" disabled selected>Choose your option</option>
+          <option value='Increasing'>Increasing</option>
+          <option value='Decreasing'>Decreasing</option>
+        </select>
       </div>
     </form>
     {% if ads_list %}

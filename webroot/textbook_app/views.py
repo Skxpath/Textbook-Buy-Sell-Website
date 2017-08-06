@@ -17,7 +17,15 @@ def ads_list(request):
         search_text = request.GET.get('ad-search-text')
     else:
         search_text = ''
-    ads_all = Ad.objects.filter(book__title__contains=search_text)
+
+    price_sort = request.GET.get('ad-sort-by-price') if request.GET.__contains__('ad-sort-by-price') else ''
+    if price_sort == 'Increasing':
+        ads_all = Ad.objects.filter(book__title__contains=search_text).order_by('price')
+    elif price_sort == "Decreasing":
+        ads_all = Ad.objects.filter(book__title__contains=search_text).order_by('-price')
+    else:
+        ads_all = Ad.objects.filter(book__title__contains=search_text)
+
     paginator = Paginator(ads_all, NUM_ADS_PER_PAGE)
 
     page = request.GET.get('page')
