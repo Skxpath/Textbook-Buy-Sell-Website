@@ -103,9 +103,14 @@ def ad_new_or_edit(request, isEditAd, ad_id):
             return HttpResponseRedirect(reverse('textbook_app:ads'))
     else:
         textbookForm = TextbookForm()
-        if isEditAd:
+        # Check if the ad to be edited belongs to the user.
+        # If it doesn't then redirect user back to their profile.
+        user = get_object_or_404(get_user_model(), pk=request.user.id)
+        if isEditAd and ad.poster.id == user.id:
             adForm = AdForm(instance=ad)
             context = {'ad': ad, 'textbookForm': textbookForm, 'adForm': adForm}
+        elif isEditAd and ad.poster.id != user.id:
+            return HttpResponseRedirect(reverse('textbook_app:profile'))
         else:
             adForm = AdForm()
             context = {'textbookForm': textbookForm, 'adForm': adForm}
