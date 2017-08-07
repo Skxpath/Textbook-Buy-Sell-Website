@@ -8,8 +8,8 @@
           <label for="ad-search-text" class="control-label">Search Ads By Textbook</label>
           <input type='text' class="form-control" name='ad-search-text'/>
         </div>
-        <div class="form-inline">
-          <select class="form-control" name='ad-sort-by-text' style="max-width:200%;width:200%">
+
+          <select class="form-control" name='ad-sort-by-text'>
             <option value="">Sort by</option>
             <option value='price inc'>Price: Low to High</option>
             <option value='price dec'>Price: High to Low</option>
@@ -17,6 +17,7 @@
             <option value='title dec'>Title: Z-A</option>
             <option value='relevance'>Relevance</option>
           </select>
+        <div class="form-inline">
           <div class="label-floating form-group">
             <label for="price-min" class="control-label">Min Price:</label>
             <input type="number" name="price-min" class="form-control"></input>
@@ -51,7 +52,7 @@
         {% endfor %}
       </ul>
     {% else %}
-      <h1>There are no ads yet</h1>
+      <h1>No ads match your search results</h1>
     {% endif %}
 
     <div class="pagination container">
