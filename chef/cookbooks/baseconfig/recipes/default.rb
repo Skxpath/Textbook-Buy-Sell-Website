@@ -6,26 +6,23 @@ execute 'apt_update' do
   command 'apt-get update'
 end
 
-# Base configuration recipe in Chef.
-package "wget"
-package "ntp"
-
-cookbook_file "ntp.conf" do
-  path "/etc/ntp.conf"
+# Setup Django Production Dependencies (nginx and postgresql)
+package "nginx"
+execute "nginx-default" do
+  # I think there's a better way to do this with chef instead of using cp, but I'm too lazy to figure it out
+  command "cp /home/ubuntu/project/chef/cookbooks/baseconfig/files/default/nginx-default /etc/nginx/sites-available/default"
 end
-execute 'ntp_restart' do
-  command 'service ntp restart'
-end
-
-# Setup postgresql db
 package "postgresql"
 package "postgresql-server-dev-all"
 package "libpython-dev"
-
 execute 'create_db' do
   command 'echo "CREATE DATABASE mydb; CREATE USER ubuntu; GRANT ALL PRIVILEGES ON DATABASE mydb TO ubuntu;" | sudo -u postgres psql'
 end
+execute "nginx_reload" do
+  command "sudo nginx -s reload"
+end
 
+#need to be ubuntu user for this command, because we configured the database to have priveleges granted to the ubuntu user
 execute 'load_initial_db_data' do
   cwd '/home/ubuntu/project'
   user 'ubuntu'
@@ -33,18 +30,25 @@ execute 'load_initial_db_data' do
 end
 
 # Setup Django Webserver
+# psycopg2 is for communication between django and postgres database
+# uwsgi is for communication between django and nginx
 package "python3-pip"
-execute 'django_install' do
-  command 'sudo pip3 install django psycopg2'
+execute 'dependencies_install' do
+  command 'sudo pip3 install django psycopg2 uwsgi'
 end
+execute 'init_uwsgi' do
+  command 'uwsgi --ini /home/ubuntu/project/uwsgi.ini  --daemonize /home/ubuntu/mysite.log'
+end
+
 execute 'django_init_dev_database' do
   cwd '/home/ubuntu/project/webroot/'
   user 'ubuntu'
   command 'python3 manage.py migrate'
 end
-execute 'django_init_server' do
-  user 'ubuntu'
-  cwd '/home/ubuntu/project/webroot'
-  command 'nohup python3 manage.py runserver 0.0.0.0:8080 &'
-end
 
+# After django is all configured, coolect static files
+# TODO: check if this can be ran right after "init_static"
+execute 'django_configure_static_files' do
+  cwd '/home/ubuntu/project/webroot/'
+  command 'sudo python3 manage.py collectstatic --noinput'
+end

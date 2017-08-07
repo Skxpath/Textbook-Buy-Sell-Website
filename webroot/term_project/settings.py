@@ -120,7 +120,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+# We serve static files using a different (faster) frontend server rather than using the django application server
+# However, django needs to know where to put static files (STATIC_ROOT) and where to find static files (STATIC_URL)
+
+# Tell django which base url it has to access to find static files
+# This url is actually controlled by nginx, the frontend server, as are all the static files
 STATIC_URL = '/static/'
+
+# Tell django where to put all its static files on the web server from different apps (including built-in apps)
+# Once django puts its files in the correct location, they can be served by nginx
+STATIC_ROOT = '/home/ubuntu/static'
 
 # This is the url django will go to after the user logs in
 # Default value is /accounts/profile/
@@ -136,8 +145,8 @@ LOGIN_URL = 'accounts:login'
 AUTH_USER_MODEL = "accounts.User"
 
 # Used for sending verification emails to users when they sign up
-# the console email backedn currently configured doesn't actually send emails; it just prints what would be sent to the console
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# This is an actual live mail sending service set up using sendgrid.
+# Emails may appear in spam folder, so make sure to check that!
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'trevy17'
