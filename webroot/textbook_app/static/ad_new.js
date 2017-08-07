@@ -2,10 +2,6 @@ function searchSuccess(data, textStatus, jqXHR) {
   $('#search_results').html(data);
 }
 
-function infoRetrievalSuccess(data, textStatus, jqXHR) {
-
-}
-
 var vm = new Vue({
   el: '#app',
   data: {
@@ -14,6 +10,7 @@ var vm = new Vue({
     textbookIsbn: '',
     textbookTitle: '',
     textbookAuthor: '',
+    showTextbookInfoNotFound: false,
   },
   methods: {
     toggleTextbookForm: function() {
@@ -32,20 +29,34 @@ var vm = new Vue({
       });
     },
     getTextbookInfo: function() {
-      $.ajax({
-        type: 'GET',
-        dataType: 'json',
-        url: '/textbook/get_textbook_info_by_isbn',
-        success: function(data){
-          var parsedData = JSON.parse(data);
-          if (parsedData.author){
-            this.textbookAuthor = parsedData.author;
+      this.textbookAuthor = '';
+      this.textbookTitle = '';
+      this.showTextbookInfoNotFound = false;
+
+      $.get('/textbook/get_textbook_info_by_isbn/'+this.textbookIsbn, function(data){
+        let bookInfo = data[Object.keys(data)[0]];
+        if(bookInfo){
+          if (bookInfo.authors && bookInfo.authors.length > 0){
+            this.textbookAuthor = bookInfo.authors[0].name;
           }
-          if (parsedData.title){
-            this.textbookTitle = parsedData.title;
+          else{
+            this.showTextbookInfoNotFound = true;
+          }
+          if (bookInfo.title){
+            this.textbookTitle = bookInfo.title;
+
+            if (bookInfo.subtitle){
+              this.textbookTitle += ' '+bookInfo.subtitle;
+            }
+          }
+          else{
+            this.showTextbookInfoNotFound = true;
           }
         }
-      })
+        else{
+          this.showTextbookInfoNotFound = true;
+        }
+      }.bind(this));
     }
   },
   // Lets us use vue templates with different brackets. Ex: [data] instead of the default {{data}}

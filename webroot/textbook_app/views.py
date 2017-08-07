@@ -147,13 +147,13 @@ def textbook_search(request):
         textbooks = {}
     return render_to_response('textbook_app/ajax_textbook_search.html', {'textbooks': textbooks})
 
-def get_textbook_info_by_isbn(request):
-    # if request.method == 'POST'
-    #     isbn = request.POST['isbn']
-    #     url = 'https://openlibrary.org/api/books?bibkeys=ISBN:'+isbn+'&format=json&jscmd=data'
-    #     r = requests.get(url)
-    #     data = json.load(r.json())
-    return JsonResponse({'author':'server author', 'title':'server test title'})
+def get_textbook_info_by_isbn(request, isbn):
+    url = 'https://openlibrary.org/api/books?bibkeys=ISBN:'+isbn+'&format=json&jscmd=data'
+    r = requests.get(url)
+    if r.status_code == requests.codes.ok:
+        return JsonResponse(r.json())
+    else:
+        return JsonResponse({'errorMessage': 'Sorry, we were unable to find all the details for that textbook. Please fill in the empty fields below.'})
 
 @login_required
 def chat(request, receiver_user_id):

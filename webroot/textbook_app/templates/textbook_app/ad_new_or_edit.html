@@ -40,7 +40,10 @@
           <div v-if='isTextbookFormShown'>
             <label for='id_isbn'>ISBN:</label>
             <span>{{ textbookForm.isbn }}</span>
-            <div><button type='button' id='isbn-get-info' class="btn btn-primary" v-on:click='getTextbookInfo'>Find book</button></div>
+            <div>
+              <button type='button' id='isbn-get-info' class="btn btn-primary" v-on:click='getTextbookInfo'>Find book</button>
+              <div v-show='showTextbookInfoNotFound' class="alert alert-dismissible alert-danger">Sorry, we were unable to find all the details for that textbook. Please fill in the empty fields below.</div>
+            </div>
             <label for='id_title'>Title:</label>
             {{ textbookForm.title }}
             <label for='id_author'>Author:</label>
