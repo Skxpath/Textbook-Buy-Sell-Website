@@ -19,10 +19,10 @@ execute 'create_db' do
   command 'echo "CREATE DATABASE mydb; CREATE USER ubuntu; GRANT ALL PRIVILEGES ON DATABASE mydb TO ubuntu;" | sudo -u postgres psql'
 end
 execute "nginx_reload" do
-  command "sudo nginx -s reload"
+  command "nginx -s reload"
 end
 
-#need to be ubuntu user for this command, because we configured the database to have priveleges granted to the ubuntu user
+#need to be ubuntu user for this command, because we configured the database to have privileges granted to the ubuntu user
 execute 'load_initial_db_data' do
   cwd '/home/ubuntu/project'
   user 'ubuntu'
@@ -46,9 +46,9 @@ execute 'django_init_dev_database' do
   command 'python3 manage.py migrate'
 end
 
-# After django is all configured, coolect static files
+# After django is all configured, collect static files
 # TODO: check if this can be ran right after "init_static"
 execute 'django_configure_static_files' do
   cwd '/home/ubuntu/project/webroot/'
-  command 'sudo python3 manage.py collectstatic --noinput'
+  command 'python3 manage.py collectstatic --noinput'
 end
