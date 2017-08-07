@@ -6,10 +6,13 @@
       <div class="form-group label-floating form-inline">
         <label for="ad-search-text" class="control-label">Search Ads By Textbook</label>
         <input type='text' class="form-control" name='ad-search-text' style="width:100%"/>
-        <select class="form-control" name='ad-sort-by-price' style="width:15%;">
-          <option value="" disabled selected>Sort by Price</option>
-          <option value='Increasing'>Increasing</option>
-          <option value='Decreasing'>Decreasing</option>
+        <select class="form-control" name='ad-sort-by-text' style="width:15%;">
+          <option value="" disabled selected>Sort by</option>
+          <option value='price inc'>Price: Increasing</option>
+          <option value='price dec'>Price: Decreasing</option>
+          <option value='title inc'>Title: Increasing</option>
+          <option value='title dec'>Title: Decreasing</option>
+          <option value='relevance'>Relevance</option>
         </select>
         <input type="submit" class="btn btn-primary" value="Search"></input>
       </div>
