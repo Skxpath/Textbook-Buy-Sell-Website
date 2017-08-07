@@ -3,17 +3,30 @@
 {% block content %}
   <div class='container'>
     <form id='search-form' method="get" data-search-url="{% url 'textbook_app:ads' %}">
-      <div class="form-group label-floating form-inline">
-        <label for="ad-search-text" class="control-label">Search Ads By Textbook</label>
-        <input type='text' class="form-control" name='ad-search-text' style="width:100%"/>
-        <select class="form-control" name='ad-sort-by-text' style="width:15%;">
-          <option value="" disabled selected>Sort by</option>
-          <option value='price inc'>Price: Increasing</option>
-          <option value='price dec'>Price: Decreasing</option>
-          <option value='title inc'>Title: Increasing</option>
-          <option value='title dec'>Title: Decreasing</option>
-          <option value='relevance'>Relevance</option>
-        </select>
+      <div>
+        <div class="label-floating form-group" style="width:100%">
+          <label for="ad-search-text" class="control-label">Search Ads By Textbook</label>
+          <input type='text' class="form-control" name='ad-search-text'/>
+        </div>
+        <div class="form-inline">
+          <select class="form-control" name='ad-sort-by-text' style="max-width:200%;width:200%">
+            <option value="">Sort by</option>
+            <option value='price inc'>Price: Increasing</option>
+            <option value='price dec'>Price: Decreasing</option>
+            <option value='title inc'>Title: Increasing</option>
+            <option value='title dec'>Title: Decreasing</option>
+            <option value='relevance'>Relevance</option>
+          </select>
+          <div class="label-floating form-group">
+            <label for="price-min" class="control-label">Min Price:</label>
+            <input type="number" name="price-min" class="form-control"></input>
+          </div>
+          <div class="label-floating form-group">
+            <label for="price-max" class="control-label">Max Price:</label>
+            <input type="number" name="price-max" class="form-control"></input>
+          </div>
+        </div>
+        <br>
         <input type="submit" class="btn btn-primary" value="Search"></input>
       </div>
     </form>

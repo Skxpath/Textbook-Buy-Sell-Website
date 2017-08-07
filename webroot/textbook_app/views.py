@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import get_user_model
-from django.db.models import Q
+from django.db.models import Q, Max
 from django.utils import timezone
 
 # TODO: Let users set this value from a form field
@@ -19,6 +19,8 @@ def ads_list(request):
         search_text = ''
 
     sort_by = request.GET.get('ad-sort-by-text') if request.GET.__contains__('ad-sort-by-text') else ''
+    min_price = request.GET.get('price-min') if request.GET.__contains__('price-min') and request.GET.get('price-min') != '' else 0
+    max_price = request.GET.get('price-max') if request.GET.__contains__('price-max') and request.GET.get('price-max') != '' else Ad.objects.all().aggregate(Max('price'))['price__max']
     if sort_by == 'price inc':
         ads_all = Ad.objects.filter(book__title__icontains=search_text).order_by('price')
     elif sort_by == "price dec":
@@ -33,6 +35,7 @@ def ads_list(request):
     else:
         ads_all = Ad.objects.filter(book__title__icontains=search_text)
 
+    ads_all = ads_all.filter(price__range=(min_price, max_price))
     paginator = Paginator(ads_all, NUM_ADS_PER_PAGE)
 
     page = request.GET.get('page')
