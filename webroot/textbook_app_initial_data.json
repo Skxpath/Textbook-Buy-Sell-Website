@@ -1,0 +1,214 @@
+[
+{
+  "model": "textbook_app.textbook",
+  "pk": "735619670",
+  "fields": {
+    "title": "Code complete 2nd Edition",
+    "author": "Steve McConnell",
+    "description": "This book will teach you how to write good code"
+  }
+},
+{
+  "model": "textbook_app.textbook",
+  "pk": "9780132783392",
+  "fields": {
+    "title": "Web development and design foundations with HTML5",
+    "author": "Terry Morris",
+    "description": "Teaches you how to design web stuff"
+  }
+},
+{
+  "model": "textbook_app.textbook",
+  "pk": "9780201616224",
+  "fields": {
+    "title": "The Pragmatic Programmer From Journeyman to Master",
+    "author": "Hunt, Andrew",
+    "description": "What others in the trenches say about The Pragmatic Programmer...\"The cool thing about this book is that it's great for keeping the programming process fresh. The book helps you to continue to grow and clearly comes from people who have been there.\" --Kent Beck"
+  }
+},
+{
+  "model": "textbook_app.textbook",
+  "pk": "9780201633610",
+  "fields": {
+    "title": "Design Patterns Elements of Reusable Object-Oriented Software (Addison-Wesley Professional Computing Series)",
+    "author": "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
+    "description": "Gang of four: Design Patterns. A classic."
+  }
+},
+{
+  "model": "textbook_app.textbook",
+  "pk": "9780201726343",
+  "fields": {
+    "title": "Discrete and combinatorial mathematics an applied introduction",
+    "author": "Ralph P. Grimaldi",
+    "description": "Learn MACM"
+  }
+},
+{
+  "model": "textbook_app.textbook",
+  "pk": "9780538497909",
+  "fields": {
+    "title": "Calculus Early Transcendentals 7th Edition",
+    "author": "James Stewart",
+    "description": "A book full of painful math problems"
+  }
+},
+{
+  "model": "textbook_app.ad",
+  "pk": 1,
+  "fields": {
+    "price": "10.00",
+    "condition": "GOOD",
+    "Ad_Description": "I don't like math, so I'm getting rid of my math textbook. I hope someone else can get more enjoyment out of it than I can",
+    "poster": 1,
+    "book": "9780538497909"
+  }
+},
+{
+  "model": "textbook_app.ad",
+  "pk": 2,
+  "fields": {
+    "price": "15.00",
+    "condition": "GOOD",
+    "Ad_Description": "I learned a lot from this book, but have learned all I can. It is time for someone else to find enjoyment from it",
+    "poster": 2,
+    "book": "9780132783392"
+  }
+},
+{
+  "model": "textbook_app.ad",
+  "pk": 3,
+  "fields": {
+    "price": "20.00",
+    "condition": "GOOD",
+    "Ad_Description": "I learned so many cool design patterns from this book. I apply them in every single program I write. This is a must have book for anyone serious about learning Computer Science",
+    "poster": 3,
+    "book": "9780201633610"
+  }
+},
+{
+  "model": "textbook_app.ad",
+  "pk": 4,
+  "fields": {
+    "price": "30.00",
+    "condition": "GOOD",
+    "Ad_Description": "Before I read this book, I had no idea how to code. Now, I'm a coding god who writes the cleanest code in the world.",
+    "poster": 4,
+    "book": "735619670"
+  }
+},
+{
+  "model": "textbook_app.ad",
+  "pk": 5,
+  "fields": {
+    "price": "1.00",
+    "condition": "GOOD",
+    "Ad_Description": "This book caused me so much pain and suffering. Please take it from me!",
+    "poster": 1,
+    "book": "9780201726343"
+  }
+},
+{
+  "model": "textbook_app.ad",
+  "pk": 6,
+  "fields": {
+    "price": "25.00",
+    "condition": "GOOD",
+    "Ad_Description": "Another one of my favourites. I'm sad to see it go, but there's simply not enough room on my book shelve.",
+    "poster": 3,
+    "book": "9780201616224"
+  }
+},
+{
+  "model": "textbook_app.ad",
+  "pk": 7,
+  "fields": {
+    "price": "34.00",
+    "condition": "GOOD",
+    "Ad_Description": "This was a good read. I wish I could read it again, but I can't find the time.",
+    "poster": 2,
+    "book": "9780201616224"
+  }
+},
+{
+  "model": "textbook_app.ad",
+  "pk": 8,
+  "fields": {
+    "price": "35.00",
+    "condition": "GOOD",
+    "Ad_Description": "Say what you will about Grimaldi, but I for one am a fan. I hope after buying this book from me, you'll be a fan too!",
+    "poster": 4,
+    "book": "9780201726343"
+  }
+},
+{
+  "model": "textbook_app.chat",
+  "pk": 1,
+  "fields": {
+    "users": [
+      1,
+      4
+    ]
+  }
+},
+{
+  "model": "textbook_app.chat",
+  "pk": 2,
+  "fields": {
+    "users": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "textbook_app.message",
+  "pk": 1,
+  "fields": {
+    "chat": 1,
+    "user": "agrawal",
+    "message": "Hey, do you still have the book? I already have a copy, but would like to sell mine and buy yours since it's so cheap",
+    "timestamp": "2017-08-08T10:17:46.195Z"
+  }
+},
+{
+  "model": "textbook_app.message",
+  "pk": 2,
+  "fields": {
+    "chat": 1,
+    "user": "tclellan",
+    "message": "Yep, it's still available. Please take it off my hands",
+    "timestamp": "2017-08-08T10:18:18.945Z"
+  }
+},
+{
+  "model": "textbook_app.message",
+  "pk": 3,
+  "fields": {
+    "chat": 2,
+    "user": "cwzhang",
+    "message": "Do you still have the book?",
+    "timestamp": "2017-08-08T10:19:24.882Z"
+  }
+},
+{
+  "model": "textbook_app.message",
+  "pk": 4,
+  "fields": {
+    "chat": 2,
+    "user": "gds3",
+    "message": "Which book? I have multiple ads",
+    "timestamp": "2017-08-08T10:20:03.076Z"
+  }
+},
+{
+  "model": "textbook_app.message",
+  "pk": 5,
+  "fields": {
+    "chat": 2,
+    "user": "cwzhang",
+    "message": "Sorry, the Design Patterns one. Geez, I wish I could add a topic to conversations to avoid such confusion. The devs for this site must suck!",
+    "timestamp": "2017-08-08T10:21:02.804Z"
+  }
+}
+]

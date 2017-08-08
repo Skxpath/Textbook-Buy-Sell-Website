@@ -21,13 +21,6 @@ execute "nginx_reload" do
   command "nginx -s reload"
 end
 
-#need to be ubuntu user for this command, because we configured the database to have privileges granted to the ubuntu user
-execute 'load_initial_db_data' do
-  cwd '/home/ubuntu/project'
-  user 'ubuntu'
-  command 'psql mydb < initialdata.txt'
-end
-
 # Setup Django Webserver
 # psycopg2 is for communication between django and postgres database
 # uwsgi is for communication between django and nginx
@@ -52,6 +45,13 @@ execute 'django_init_dev_database' do
   cwd '/home/ubuntu/project/webroot/'
   user 'ubuntu'
   command 'python3 manage.py migrate'
+end
+
+# need to be ubuntu user for this command, because we configured the database to have privileges granted to the ubuntu user
+execute 'load_initial_db_data' do
+  cwd '/home/ubuntu/project/webroot'
+  user 'ubuntu'
+  command 'python3 manage.py loaddata accounts_initial_data.json && python3 manage.py loaddata textbook_app_initial_data.json'
 end
 
 # After django is all configured, collect static files

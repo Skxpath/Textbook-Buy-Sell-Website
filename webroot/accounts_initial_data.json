@@ -1,0 +1,78 @@
+[
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$PfJtkgWlMtjl$QVZCUPRU00c7IzCt+6mz24VhhNMs6cBvO1JgMqgxmoE=",
+    "last_login": "2017-08-08T10:17:55.655Z",
+    "is_superuser": false,
+    "username": "tclellan",
+    "first_name": "Trevor",
+    "last_name": "Clelland",
+    "email": "tclellan@sfu.ca",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2017-08-08T09:57:27.910Z",
+    "school": "SFU",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$62c9uwlUC767$d61uwOp4tELtSs4cpC4JuBqdIrnngaHOOO/lkvAoC+A=",
+    "last_login": "2017-08-08T10:20:14.593Z",
+    "is_superuser": false,
+    "username": "cwzhang",
+    "first_name": "Alex",
+    "last_name": "Zhang",
+    "email": "cwzhang@sfu.ca",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2017-08-08T10:00:15.487Z",
+    "school": "SFU",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$R3zcBzZ0WJIN$pkzRNev1yYoJL0BxKftkQ4Da25dDWiaPiczO4kxM1bs=",
+    "last_login": "2017-08-08T10:19:45.865Z",
+    "is_superuser": false,
+    "username": "gds3",
+    "first_name": "Graeme",
+    "last_name": "Smith",
+    "email": "gds3@sfu.ca",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2017-08-08T10:03:02.000Z",
+    "school": "SFU",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$JTfXEzdXygPL$cp74IJrZ9O7oc9LLpqrL3ksnDPYhsVhNm5mPvpFAhEM=",
+    "last_login": "2017-08-08T10:14:36.740Z",
+    "is_superuser": false,
+    "username": "agrawal",
+    "first_name": "Siddhant",
+    "last_name": "Agrawal",
+    "email": "agrawal@sfu.ca",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2017-08-08T10:06:15.365Z",
+    "school": "SFU",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
