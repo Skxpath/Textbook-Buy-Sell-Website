@@ -8,9 +8,8 @@ end
 
 # Setup Django Production Dependencies (nginx and postgresql)
 package "nginx"
-execute "nginx-default" do
-  # I think there's a better way to do this with chef instead of using cp, but I'm too lazy to figure it out
-  command "cp /home/ubuntu/project/chef/cookbooks/baseconfig/files/default/nginx-default /etc/nginx/sites-available/default"
+cookbook_file 'nginx-default' do
+  path '/etc/nginx/sites-available/default'
 end
 package "postgresql"
 package "postgresql-server-dev-all"
@@ -36,8 +35,17 @@ package "python3-pip"
 execute 'dependencies_install' do
   command 'sudo pip3 install django psycopg2 uwsgi'
 end
+
+# Put rc.local file in the right place. Run it manually while provisioning since the vm has already started
+# rc.local is for starting uwsgi upon vm start. This is done in rc.local instead of here in the chef script, because
+# if you use 'vagrant halt' instead of 'vagrant destroy', your next 'vagrant up' will restart your previously provisioned
+# vm without running the chef script, which means all the dependencies will be installed, but uwsgi won't be started
+# starting uwsgi from rc.local ensures it's started upon every vm boot regardless of whether the machine is provisioned
+cookbook_file 'rc.local' do
+  path '/etc/rc.local'
+end
 execute 'init_uwsgi' do
-  command 'uwsgi --ini /home/ubuntu/project/uwsgi.ini  --daemonize /home/ubuntu/mysite.log'
+  command 'sudo /etc/rc.local'
 end
 
 execute 'django_init_dev_database' do
