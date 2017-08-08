@@ -3,9 +3,32 @@
 {% block content %}
   <div class='container'>
     <form id='search-form' method="get" data-search-url="{% url 'textbook_app:ads' %}">
-      <div class="form-group label-floating">
-        <label for="ad-search-text" class="control-label">Search Ads By Textbook</label>
-        <input type='text' class="form-control" name='ad-search-text'/>
+      <div>
+        <div class="label-floating form-group" style="width:100%">
+          <label for="ad-search-text" class="control-label">Search Ads By Textbook</label>
+          <input type='text' class="form-control" name='ad-search-text'/>
+        </div>
+
+          <select class="form-control" name='ad-sort-by-text'>
+            <option value="">Sort by</option>
+            <option value='price inc'>Price: Low to High</option>
+            <option value='price dec'>Price: High to Low</option>
+            <option value='title inc'>Title: A-Z</option>
+            <option value='title dec'>Title: Z-A</option>
+            <!--<option value='relevance'>Relevance</option> Add this when Relevance is done on back end -->
+          </select>
+        <div class="form-inline">
+          <div class="label-floating form-group">
+            <label for="price-min" class="control-label">Min Price:</label>
+            <input type="number" name="price-min" class="form-control"></input>
+          </div>
+          <div class="label-floating form-group">
+            <label for="price-max" class="control-label">Max Price:</label>
+            <input type="number" name="price-max" class="form-control"></input>
+          </div>
+        </div>
+        <br>
+        <input type="submit" class="btn btn-primary" value="Search"></input>
       </div>
     </form>
     {% if ads_list %}
@@ -29,7 +52,7 @@
         {% endfor %}
       </ul>
     {% else %}
-      <h1>There are no ads yet</h1>
+      <h1>No ads match your search results</h1>
     {% endif %}
 
     <div class="pagination container">
