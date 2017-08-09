@@ -81,6 +81,9 @@ def profile(request):
     return render(request, 'textbook_app/profile.html', context)
 
 def ad_delete(request, ad_id):
+    ad = get_object_or_404(Ad, pk=ad_id)
+    if ad.poster.id != request.user.id:
+        HttpResponseRedirect(reverse('textbook_app:profile'))
     ad_tobe_deleted = get_object_or_404(Ad, pk=ad_id)
     ad_tobe_deleted.delete()
     return HttpResponseRedirect(reverse('textbook_app:profile'))
