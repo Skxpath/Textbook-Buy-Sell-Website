@@ -40,6 +40,12 @@ end
 execute 'init_uwsgi' do
   command 'sudo /etc/rc.local'
 end
+# There seems to be an issue with line endings in the git repository being converted to line endings that unix
+# systems don't like, which causes the rc.local script to not run. Until this is solved, we will run the uwsgi
+# startup command here to ensure the system actually starts
+execute 'make-sure-uwsgi-starts' do
+  command 'uwsgi --ini /home/ubuntu/project/uwsgi.ini  --daemonize /home/ubuntu/mysite.log'
+end
 
 execute 'django_init_dev_database' do
   cwd '/home/ubuntu/project/webroot/'
