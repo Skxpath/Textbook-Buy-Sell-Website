@@ -12,6 +12,7 @@ import requests
 
 # TODO: Let users set this value from a form field
 NUM_ADS_PER_PAGE = 5
+MAX_TEXTBOOKS_RETURNED = 5
 
 def ads_list(request):
     if (request.GET.__contains__('ad-search-text')):
@@ -165,7 +166,7 @@ def textbook_search(request):
     else:
         search_text = ''
     if search_text:
-        textbooks = Textbook.objects.filter(Q(title__contains=search_text) | Q(isbn__contains=search_text))
+        textbooks = Textbook.objects.filter(Q(title__contains=search_text) | Q(isbn__contains=search_text))[:MAX_TEXTBOOKS_RETURNED]
     else:
         textbooks = {}
     return render_to_response('textbook_app/ajax_textbook_search.html', {'textbooks': textbooks})
